@@ -1,24 +1,33 @@
 package com.sawam.entity;
 
-import jakarta.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="candidate_id")
     private int id;
     private String position;
     private String year;
     private String gender;
     private String firstname;
     private String lastname;
-    // @OneToOne(mappedBy = "candidate")
-    // private Voters voter;
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Voters> voters = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public int getId() {
         return id;
@@ -57,6 +66,20 @@ public class Candidate {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    public List<Voters> getVoters() {
+        return voters;
+    }
+    public void setVoters(List<Voters> voters) {
+        this.voters = voters;
+    }
+
+    
     // public Voters getVoter() {
     //     return voter;
     // }

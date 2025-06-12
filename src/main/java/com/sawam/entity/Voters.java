@@ -16,7 +16,7 @@ public class Voters {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="voters_id")
     private int id;
-    private Long idNumber;
+    private String idNumber;
     private String password;
     private String firstname;
     private String lastname;
@@ -25,9 +25,9 @@ public class Voters {
     private String account;
 
     
-    // @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
-    // @JoinColumn(name = "candidate_id")
-    // private Candidate candidate;
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
     public int getId() {
         return id;
@@ -35,12 +35,7 @@ public class Voters {
     public void setId(int id) {
         this.id = id;
     }
-    public Long getIdNumber() {
-        return idNumber;
-    }
-    public void setIdNumber(Long idNumber) {
-        this.idNumber = idNumber;
-    }
+    
     public String getPassword() {
         return password;
     }
@@ -78,6 +73,26 @@ public class Voters {
     public void setYear(String year) {
         this.year = year;
     }
+    public String getIdNumber() {
+        return idNumber;
+    }
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+    public Candidate getCandidate() {
+        return candidate;
+    }
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
+    }
+    @Override
+    public String toString() {
+        return "Voters [id=" + id + ", idNumber=" + idNumber + ", password=" + password + ", firstname=" + firstname
+                + ", lastname=" + lastname + ", year=" + year + ", status=" + status + ", account=" + account
+                + ", candidate=" + candidate + "]";
+    }
 
+
+    
     
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,27 +25,32 @@ public class VotersController {
     @Autowired
     private VoterService votersService;
 
-    @GetMapping("/Voterss")
+    @GetMapping("/voters")
     public ResponseEntity<List<Voters>> getAllVoterss() {
         List<Voters> Voters =  votersService.getAllVoters();
         return ResponseEntity.ok(Voters);
     }
 
-    @PostMapping("/Voterss")
+    @PostMapping("/voters")
     public ResponseEntity<Voters> addVoters(@RequestBody Voters Voters) {
         Voters response =  votersService.addVoters(Voters);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/Voterss/{id}")
+    @PutMapping("/voters/{id}")
     public ResponseEntity<Voters> updateVoters(@PathVariable("id") int id, @RequestBody Voters Voters) {
         Voters response =  votersService.updateVoters(id, Voters);
         return ResponseEntity.ok(response);
     }
     
-    @DeleteMapping("/Voterss/{id}")
+    @DeleteMapping("/voters/{id}")
     public ResponseEntity<HttpStatus> deleteVoters(@PathVariable("id") int id) {
         votersService.deleteVoters(id);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/voters/validateUser")
+    public ResponseEntity<Boolean> validateUser(@RequestBody Voters entity) {
+        return ResponseEntity.ok(votersService.validateUser(entity));
     }
 }

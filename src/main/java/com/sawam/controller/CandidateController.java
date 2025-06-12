@@ -49,4 +49,9 @@ public class CandidateController {
         candidateService.deleteCandidate(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    @PutMapping("/candidate/vote")
+    public ResponseEntity<HttpStatus> voteCandidate(@RequestBody Candidate candidate) {
+        candidateService.voteCandidate(candidate);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

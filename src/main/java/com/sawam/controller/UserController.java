@@ -7,15 +7,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sawam.Service.UserService;
 import com.sawam.entity.User;
 
+import java.net.http.HttpHeaders;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -43,6 +49,20 @@ public class UserController {
     @GetMapping("/allUsers")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User entity) {
+        //TODO: process PUT request
+        User user = userService.updateUser(entity);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
+        //TODO: process PUT request
+        userService.deleteUser(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     
     

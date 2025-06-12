@@ -12,4 +12,5 @@ public interface CandidateService {
     Candidate addCandidate(Candidate candidate);
     void deleteCandidate(int id);
     Candidate updateCandidate(int id, Candidate candidate);
+    void voteCandidate(Candidate candidate);
 }

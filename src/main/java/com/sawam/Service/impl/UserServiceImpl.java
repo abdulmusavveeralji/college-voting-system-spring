@@ -32,26 +32,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUSer() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUSer'");
-    }
-
-    @Override
     public User getUser() {
         // TODO Auto-generated method stub
         return userRepository.findAll().get(0);
     }
 
     @Override
-    public User deleteUser() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User updateUser(User entity) {
+
+        Optional<User> get = userRepository.findById(entity.getId());
+        User user = get.get();
+        user.setFirstname(entity.getFirstname());
+        user.setLastname(entity.getLastname());
+        user.setUsername(entity.getUsername());
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
     }
     
 }
