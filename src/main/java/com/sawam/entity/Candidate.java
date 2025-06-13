@@ -3,8 +3,11 @@ package com.sawam.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,8 +25,6 @@ public class Candidate {
     private String gender;
     private String firstname;
     private String lastname;
-    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Voters> voters = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -72,13 +73,6 @@ public class Candidate {
     public void setCategory(Category category) {
         this.category = category;
     }
-    public List<Voters> getVoters() {
-        return voters;
-    }
-    public void setVoters(List<Voters> voters) {
-        this.voters = voters;
-    }
-
     
     // public Voters getVoter() {
     //     return voter;

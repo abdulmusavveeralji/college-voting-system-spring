@@ -4,20 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.sawam.Service.CandidateService;
-import com.sawam.entity.Candidate;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sawam.Service.CandidateService;
+import com.sawam.entity.Candidate;
+import com.sawam.entity.Voters;
 
 
 @RestController
@@ -51,7 +50,7 @@ public class CandidateController {
     }
     @PutMapping("/candidate/vote")
     public ResponseEntity<HttpStatus> voteCandidate(@RequestBody Candidate candidate) {
-        candidateService.voteCandidate(candidate);
+        candidateService.voteCandidate(new Voters(), 1, 1);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

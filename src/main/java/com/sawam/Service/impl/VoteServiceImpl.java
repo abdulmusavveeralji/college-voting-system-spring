@@ -10,53 +10,61 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sawam.Repository.CandidateRepository;
 import com.sawam.Repository.CategoryRepository;
 import com.sawam.Repository.VoteRepository;
-import com.sawam.Service.CandidateService;
-import com.sawam.Service.VoterService;
+import com.sawam.Repository.VotersRepository;
+import com.sawam.Service.VoteService;
 import com.sawam.entity.Candidate;
 import com.sawam.entity.Category;
 import com.sawam.entity.Vote;
 import com.sawam.entity.Voters;
 
 @Service
-public class CandidateServiceImpl implements CandidateService{
+public class VoteServiceImpl implements VoteService {
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private CandidateRepository repository;
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired 
-    private VoteRepository voteRepository;
+    @Autowired
+    private VotersRepository votersRepository;
 
     @Override
-    public List<Candidate> getAllCandidates() {
-        return repository.findAll();
+    public List<Vote> getAllVotes() {
+        return voteRepository.findAll();
     }
 
     @Override
-    public Candidate addCandidate(Candidate candidate) {
-        return repository.save(candidate);
+    public Vote addaVote(Vote vote) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addaVote'");
     }
 
     @Override
-    public void deleteCandidate(int id) {
-        repository.deleteById(id);
+    public void deleteVote(int id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteVote'");
     }
 
     @Override
-    public Candidate updateCandidate(int id, Candidate candidate) {
-        return repository.save(candidate);
+    public Vote updateVote(int id, Vote vote) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateVote'");
     }
+    
 
     @Override
     @Transactional
-    public void voteCandidate(Voters voter, int candidateId, int categoryId) {
+    public Vote voteCandidate(Voters voter, int candidateId, int categoryId) {
         Optional<Candidate> candidateOpt = repository.findById(candidateId);
         Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
+        Optional<Voters> voterOpt = votersRepository.findByIdNumber(voter.getIdNumber());
 
         if (!candidateOpt.isPresent() || !categoryOpt.isPresent()) {
             // Handle case when candidate or category is not found
-            return; 
+            return null; 
         }
 
         Candidate candidate = candidateOpt.get();
@@ -65,24 +73,26 @@ public class CandidateServiceImpl implements CandidateService{
         // Ensure the candidate belongs to the selected category
         if (!candidate.getCategory().equals(category)) {
             // Handle case when the candidate doesn't belong to the selected category
-            return;
+            return null;
         }
 
         // Check if the voter has already voted in the given category
         Optional<Vote> existingVote = voteRepository.findByVoter_IdAndCategory_Id(voter.getId(), category.getId());
         if (existingVote.isPresent()) {
             // Handle case where the voter has already voted in this category
-            return;
+            return null;
         }
 
         // Create the vote
         Vote vote = new Vote();
-        vote.setVoter(voter);
+
+        Voters newVoter = voterOpt.get();
+        newVoter.setVoted(true);
+        vote.setVoter(newVoter);
         vote.setCandidate(candidate);
         vote.setCategory(category);
 
         // Save the vote
-        voteRepository.save(vote);
+        return voteRepository.save(vote);
     }
-    
 }

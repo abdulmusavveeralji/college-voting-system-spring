@@ -50,7 +50,7 @@ public class VotersController {
     }
 
     @PostMapping("/voters/validateUser")
-    public ResponseEntity<Boolean> validateUser(@RequestBody Voters entity) {
+    public ResponseEntity<Voters> validateUser(@RequestBody Voters entity) {
         return ResponseEntity.ok(votersService.validateUser(entity));
     }
 }

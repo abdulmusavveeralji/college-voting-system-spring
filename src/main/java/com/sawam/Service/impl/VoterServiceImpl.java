@@ -26,14 +26,14 @@ public class VoterServiceImpl implements VoterService {
     @Override
     public List<Voters> getAllVoters() {
         return repository.findAll();
-        
+
     }
 
     @Override
     public Voters addVoters(Voters voters) {
         voters.setPassword(UUID.randomUUID().toString());
-        voters.setStatus("Unvoted");
-        return repository.save(voters);    
+        voters.setVoted(false);
+        return repository.save(voters);
     }
 
     @Override
@@ -47,23 +47,42 @@ public class VoterServiceImpl implements VoterService {
     }
 
     @Override
-    public Boolean validateUser(Voters entity) {
+    public Voters validateUser(Voters entity) {
         Optional<Voters> get = repository.findByIdNumber(entity.getIdNumber());
-        if (!get.isPresent()) return false;
+        try {
 
-        System.out.println(entity.toString());
-        System.out.println(get.get().toString());
-        return get.get().getPassword().equals(entity.getPassword());
+            if (!get.isPresent())
+                throw new VoterNotFoundException("Voter Not found");
+            if (!get.get().getPassword().equals(entity.getPassword()))
+                throw new InvalidPasswordException("Password Not Match");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return get.get();
+
     }
 
     @Override
     public Optional<Voters> findById(int id) {
         return repository.findById(id);
     }
-    
+
     @Override
     public Optional<Voters> findByIdNumber(String id) {
-        return  repository.findByIdNumber(id);
+        return repository.findByIdNumber(id);
     }
-    
+
+}
+
+class VoterNotFoundException extends Exception {
+    public VoterNotFoundException(String message) {
+        super(message);
+    }
+}
+
+class InvalidPasswordException extends Exception {
+    public InvalidPasswordException(String message) {
+        super(message);
+    }
 }

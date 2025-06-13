@@ -1,14 +1,15 @@
 package com.sawam.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Voters {
@@ -21,13 +22,12 @@ public class Voters {
     private String firstname;
     private String lastname;
     private String year;
-    private String status;
+    private boolean isVoted;
     private String account;
 
     
-    @ManyToOne
-    @JoinColumn(name = "candidate_id")
-    private Candidate candidate;
+    // @OneToMany(mappedBy = "voter", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Vote> votes = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -55,11 +55,11 @@ public class Voters {
         this.lastname = lastname;
     }
     
-    public String getStatus() {
-        return status;
+    public boolean isVoted() {
+        return isVoted;
     }
-    public void setStatus(String status) {
-        this.status = status;
+    public void setVoted(boolean isVoted) {
+        this.isVoted = isVoted;
     }
     public String getAccount() {
         return account;
@@ -79,20 +79,6 @@ public class Voters {
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
-    public Candidate getCandidate() {
-        return candidate;
-    }
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
-    }
-    @Override
-    public String toString() {
-        return "Voters [id=" + id + ", idNumber=" + idNumber + ", password=" + password + ", firstname=" + firstname
-                + ", lastname=" + lastname + ", year=" + year + ", status=" + status + ", account=" + account
-                + ", candidate=" + candidate + "]";
-    }
 
-
-    
     
 }
